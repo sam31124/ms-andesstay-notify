@@ -12,6 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/notify")
+@CrossOrigin(origins = "*")
 public class NotificationController {
 
     private final AuditLogService auditLogService;
