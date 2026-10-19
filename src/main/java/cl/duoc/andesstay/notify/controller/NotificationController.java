@@ -104,7 +104,7 @@ public class NotificationController {
 
             if (simulateError) {
                 // En AWS despachamos al Dead Letter Exchange directamente a la DLQ correspondiente
-                awsTemplate.convertAndSend(RabbitConsumerConfig.EXCHANGE_DEAD_LETTER, dlqQueueName, envelope);
+                awsTemplate.convertAndSend(RabbitConsumerConfig.EXCHANGE_DLX, dlqQueueName, envelope);
                 auditLogService.addLog(NotificationLog.create(
                         envelope.getEventId(),
                         envelope.getType(),
@@ -133,7 +133,7 @@ public class NotificationController {
             return ResponseEntity.ok(Map.of(
                     "message", simulateError ? "☁️ Mensaje de prueba despachado a la DLQ en AWS Cloud" : "☁️ Mensaje de prueba despachado a AWS Cloud",
                     "broker", "AWS Cloud (54.162.30.246:5672)",
-                    "exchange", simulateError ? RabbitConsumerConfig.EXCHANGE_DEAD_LETTER : RabbitConsumerConfig.EXCHANGE_DIRECT,
+                    "exchange", simulateError ? RabbitConsumerConfig.EXCHANGE_DLX : RabbitConsumerConfig.EXCHANGE_DIRECT,
                     "routingKey", simulateError ? dlqQueueName : routingKey,
                     "eventId", envelope.getEventId(),
                     "correlationId", envelope.getCorrelationId()
